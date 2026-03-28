@@ -1,0 +1,16 @@
+{
+  "name": "whatsapp-bot",
+  "version": "1.0.0",
+  "description": "WhatsApp bot that auto-replies and views statuses",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "venom-bot": "^4.0.0" 
+    // or replace with "baileys": "^5.0.0" if using Baileys library
+  },
+  "engines": {
+    "node": "18.x" 
+  }
+}

@@ -1,0 +1,35 @@
+// index.js
+const SESSION_ID = process.env.SESSION_ID; // your WhatsApp session ID
+const venom = require('venom-bot'); // or use Baileys if you prefer
+
+// Create bot instance
+venom.create(SESSION_ID, undefined, undefined, { logQR: false })
+  .then(client => {
+    console.log('Bot is online and ready!');
+
+    // Function to view statuses automatically
+    async function viewStatuses() {
+      try {
+        const statuses = await client.getAllContacts(); // get contacts
+        for (let contact of statuses) {
+          await client.checkNumberStatus(contact.id); // marks as seen (Venom workaround)
+        }
+        console.log(`Viewed statuses for ${statuses.length} contacts`);
+      } catch (err) {
+        console.log('Error viewing statuses:', err);
+      }
+    }
+
+    // Run every 5 minutes
+    setInterval(viewStatuses, 5 * 60 * 1000);
+
+    // Auto-reply to messages
+    client.onMessage(message => {
+      client.sendText(message.from, "Hi! I’m currently unavailable. I’ll get back to you soon. ✅");
+      console.log(`Replied to ${message.from}: ${message.body}`);
+    });
+
+  })
+  .catch(err => {
+    console.log('Bot failed to start:', err);
+  });
